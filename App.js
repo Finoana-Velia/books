@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Image, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Bars3CenterLeftIcon, BellIcon, MagnifyingGlassIcon} from 'react-native-heroicons/solid';
@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react';
 import { categories } from './helpers/Categories';
 import CategoryCard from './components/CategoryCard';
 import { getByCategory } from './api/BooksService';
+import MasonryList from '@react-native-seoul/masonry-list';
 
 
 export default function App() {
@@ -16,13 +17,17 @@ export default function App() {
   const [response, setResponse] = useState(null);
 
   useEffect(() => {
-    getByCategory(activeCategory).then(response => {
-      setTimeout(() => {
-        setResponse(response);
-        setBooks(response.items);
-      },2000);
-    });
-  });
+    getByCategory(activeCategory).then(
+      response => {
+        setTimeout(() => {
+          console.log(response);
+          setResponse(response);
+          setBooks(response.items);
+          console.log(response.items);
+        },2000)
+      }
+    );
+  },[]);
 
   return (
 
@@ -61,7 +66,26 @@ export default function App() {
               <MagnifyingGlassIcon size="30" strokeWidth={3} color={'gray'}/>
           </View>
 
-          
+          {/* <View className="h-60 px-2 flex flex-col justify-center items-center relative">
+            <Image source={activeCategory.image} className="h-40 px-3 w-[25%] z-10 mb-6 shadow-xl"/>
+            <View className="h-1/3 bg-white w-[40%] flex justify-center items-center pt-3 absolute bottom-1 rounded">
+              <Text>Very long title for a book</Text>
+            </View>
+          </View> */}
+
+          {/* <MasonryList
+            data={books}
+            keyExtractor={(item) => item.id}
+            numColumns={2}
+            showsVerticalScrollIndicator={false}
+            renderItem={(item, index) => <View className="h-60 px-2 flex flex-col justify-center items-center relative">
+            <Image source={activeCategory.image} className="h-40 px-3 w-[25%] z-10 mb-6 shadow-xl"/>
+            <View className="h-1/3 bg-white w-[40%] flex justify-center items-center pt-3 absolute bottom-1 rounded">
+              <Text>Very long title for a book</Text>
+            </View>
+          </View>}
+            onEndReachedThreshold={0.1}
+          /> */}
         
           
         </View>
