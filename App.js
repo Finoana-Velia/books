@@ -3,13 +3,26 @@ import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 
 import { LinearGradient } from 'expo-linear-gradient';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Bars3CenterLeftIcon, BellIcon, MagnifyingGlassIcon} from 'react-native-heroicons/solid';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { categories } from './helpers/Categories';
 import CategoryCard from './components/CategoryCard';
-//const categories = ["Action","Roman","Aventure","Science Fiction","Drame","Documentation"]
+import { getByCategory } from './api/BooksService';
+
+
 export default function App() {
 
   const [activeCategory, setActiveCagtegory] = useState(categories[0]);
+  const [books, setBooks] = useState([]);
+  const [response, setResponse] = useState(null);
+
+  useEffect(() => {
+    getByCategory(activeCategory).then(response => {
+      setTimeout(() => {
+        setResponse(response);
+        setBooks(response.items);
+      },2000);
+    });
+  });
 
   return (
 
@@ -24,6 +37,7 @@ export default function App() {
           <View className="my-3 space-y-3">
             <Text className="ml-4 text-3xl font-bold text-gray-500">Categories</Text>
           </View>
+
           <View className="pl-4">
             <ScrollView horizontal showsHorizontalScrollIndicator={false}>
               {
@@ -46,7 +60,9 @@ export default function App() {
             />
               <MagnifyingGlassIcon size="30" strokeWidth={3} color={'gray'}/>
           </View>
+
           
+        
           
         </View>
       </SafeAreaView>
