@@ -6,9 +6,10 @@ import { Bars3CenterLeftIcon, BellIcon, MagnifyingGlassIcon} from 'react-native-
 import { useEffect, useState } from 'react';
 import { categories } from './helpers/Categories';
 import CategoryCard from './components/CategoryCard';
-import { getByCategory } from './api/BooksService';
+import { getByCategory, getByTitle } from './api/BooksService';
 import MasonryList from '@react-native-seoul/masonry-list';
 import Shelf from './components/Shelf';
+import Loading from './components/Loading';
 
 
 export default function App() {
@@ -16,18 +17,46 @@ export default function App() {
   const [activeCategory, setActiveCagtegory] = useState(categories[0]);
   const [books, setBooks] = useState([]);
   const [response, setResponse] = useState(null);
+  const [text, setText] = useState("");
 
   useEffect(() => {
+    setResponse(null);
     getByCategory(activeCategory).then(
       response => {
         setTimeout(() => {
           setResponse(response);
           setBooks(response.items);
-          console.log("all data should be loaded");
         },2000)
       }
     );
   },[]);
+
+  const _changeCategory = (category) => {
+    setResponse(null);
+    getByCategory(category.title).then(
+      response => {
+        setTimeout(() => {
+          setResponse(response);
+          setBooks(response.items);
+          setActiveCagtegory(category);
+        },2000)
+      }
+    );
+  }
+
+  const _onSearch = (category,text) => {
+    setResponse(null);
+    getByTitle(category,text).then(
+      response => {
+        setTimeout(() => {
+          setResponse(response);
+          setBooks(response.items);
+        },2000)
+      }
+    );
+  }
+
+
 
   return (
 
@@ -48,7 +77,7 @@ export default function App() {
               {
                 categories.map(cat => {
                   return (
-                    <TouchableOpacity key={cat.id} onPress={() => setActiveCagtegory(cat)}>
+                    <TouchableOpacity key={cat.id} onPress={() => _changeCategory(cat)}>
                       <CategoryCard category={cat} isActive={activeCategory.id !== cat.id}/>
                     </TouchableOpacity>
                     )
@@ -59,6 +88,9 @@ export default function App() {
 
           <View className="flex flex-row rounded bg-white justify-center align-center mx-2 my-3 pt-1">
             <TextInput
+              value={text}
+              onChangeText={setText}
+              onSubmitEditing={() => _onSearch(activeCategory.title, text)}
               placeholder='Search'
               placeholderTextColor={'gray'}
               className="flex pl-2 rounded w-[90%]"
@@ -66,19 +98,19 @@ export default function App() {
               <MagnifyingGlassIcon size="30" strokeWidth={3} color={'gray'}/>
           </View>
 
-          <FlatList
+          {response ? <FlatList
             style={{alignSelf : "stretch"}}
             contentContainerStyle={{
               paddingHorizontal : 24,
               alignSelf : 'stretch',
-              paddingBottom : 500
+              paddingBottom : 550
             }}
             numColumns={2}
             data={books}
             renderItem={({item}) => (
               <Shelf book={item}/>
             )}
-          />
+          /> : <Loading />}
         
           
         </View>
