@@ -2,9 +2,13 @@ import { Image, Text, TouchableOpacity, View } from "react-native";
 
 export default function Shelf(params) {
     const book = params.book;
+    const navigation = params.navigation;
 
     return (
-    <TouchableOpacity className="w-1/2 h-60 px-2 flex flex-col justify-center items-center relative">
+    <TouchableOpacity 
+        className="w-1/2 h-60 px-2 flex flex-col justify-center items-center relative"
+        onPress={() => navigation.navigate("Detail",book)}
+    >
         {/* <Image 
             source={{ uri : book.volumeInfo.imageLinks.smallThumbnail}}
             className="h-40 px-3 w-[75%] z-10 mb-6 shadow-xl"
