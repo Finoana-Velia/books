@@ -7,10 +7,13 @@ export default function Detail(props) {
     const book = props.route.params;
 
     const navigation = useNavigation();
+
+    console.log("Book Information : ");
+    console.log(book.volumeInfo);
     
     return (
         <ScrollView
-            contentContainerStyle={{paddingBottom : 20}}
+            contentContainerStyle={{paddingBottom : 50}}
             className="flex-1 min-h-screen"
         >
             <View className="container bg-white">
