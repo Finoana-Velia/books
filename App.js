@@ -1,11 +1,13 @@
+import { Provider } from 'react-redux';
 import BottomTabsNavigation from './navigations/BottomTabsNavigation';
-import StackNavigation from './navigations/StackNavigation';
+import { store } from './reducer/Configuration';
 
 
 export default function App() {
   return (
-    // <StackNavigation />
-    <BottomTabsNavigation />
+    <Provider store={store}>
+      <BottomTabsNavigation />
+    </Provider>
   );
 }
 

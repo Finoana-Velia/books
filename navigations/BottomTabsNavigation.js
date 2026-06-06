@@ -10,7 +10,7 @@ export default function BottomTabsNavigation() {
     return (
         <NavigationContainer>
             <Tab.Navigator screenOptions={{ headerShown : false }}>
-                <Tab.Screen name="Home" component={StackNavigation}
+                <Tab.Screen name="Main" component={StackNavigation}
                     options={{
                         tabBarLabel : "Home",
                         tabBarIcon : () => {

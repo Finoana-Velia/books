@@ -2,6 +2,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import Home from "../screens/Home";
 import Detail from "../screens/Detail";
+import Favorite from "../screens/Favorite";
 
 const Stack = createStackNavigator();
 

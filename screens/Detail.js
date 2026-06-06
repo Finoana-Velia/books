@@ -2,14 +2,30 @@ import { useNavigation } from "@react-navigation/native";
 import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { BookmarkIcon, BookOpenIcon, ChevronLeftIcon, HeartIcon, ShareIcon } from "react-native-heroicons/solid";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { toggleFavorite } from "../reducer/Reducer";
+import { useDispatch, useSelector } from "react-redux";
 
 export default function Detail(props) {
     const book = props.route.params;
 
     const navigation = useNavigation();
 
-    console.log("Book Information : ");
-    console.log(book.volumeInfo);
+    const dispatch = useDispatch();
+    const books = useSelector((state) => state.favorite.books);
+    console.log("Books favorite list");
+    console.log(books);
+    // const books = useSelector((state) => state.favoriteBooks);
+
+    // console.log("Book Information : ");
+    // console.log(book.volumeInfo);
+    // console.log("base info : " + book.id);
+
+    // const _onPutFavorite = () => {
+    //     const action = { type : 'TOGGLE_FAVORITE', value : book}
+    //     console.log(props);
+    //     props.dispatch(action);
+    //     console.log(props.dispatch(action));
+    // }
     
     return (
         <ScrollView
@@ -21,10 +37,10 @@ export default function Detail(props) {
                     <TouchableOpacity
                         onPress={() => navigation.goBack()}
                     >
-                        <ChevronLeftIcon size="28" strokeWidth={2.5} color="white"/>
+                        <ChevronLeftIcon size="28" strokeWidth={2.5} color="silver"/>
                     </TouchableOpacity>
                     <TouchableOpacity>
-                        <ShareIcon size="28" strokeWidth={2.5} color="white" />
+                        <ShareIcon size="28" strokeWidth={2.5} color="silver" />
                     </TouchableOpacity>
                 </SafeAreaView>
                 <View className="h-72">
@@ -58,10 +74,13 @@ export default function Detail(props) {
                             <BookmarkIcon size="50" strokeWidth={2.5} color="silver" />
                             <Text className="text-xl text-slate-500">Bookmark</Text> 
                         </View>
-                        <View className="flex flex-col justify-center items-center">
+                        <TouchableOpacity 
+                            className="flex flex-col justify-center items-center"
+                            onPress={() => dispatch(toggleFavorite(book,"TOGGLE_FAVORITE"))}
+                        >
                             <HeartIcon size="50" strokeWidth={2.5} color="silver"/>
                             <Text className="text-xl text-slate-500">Like</Text> 
-                        </View>
+                        </TouchableOpacity>
                         
                     </View>
                     <View className="border-slate-300 border mx-5"></View>
