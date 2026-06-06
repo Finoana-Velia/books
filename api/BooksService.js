@@ -1,4 +1,4 @@
-const key = "AIzaSyAv4Kquwg8OcDlgQVhFVuDkveCKZlc0ETI";
+const key = "replace_with_your_own_keys";
 const baseUrl = "https://www.googleapis.com/books/v1/volumes?key=" + key;
 
 export function getByCategory(category) {
